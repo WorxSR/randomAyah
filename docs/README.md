@@ -46,4 +46,22 @@ you might run it locally in your chrome browser or any compatible browser as "Br
 ├── docs/
 |  └──privacy.html
 |  └──Random Quran Ayah-User Data Privacy.pdf
-└── README.md
+|  └── README.md
+
+
+---
+
+## 🧠 Acknowledgments
+
+- Quran API powered by [Alquran.cloud](https://alquran.cloud/)
+- Inspired by the need for mindful and meaningful browser experiences
+
+---
+
+## 📬 Contact
+
+For suggestions or support, please use the worx.sw@email.com
+
+---
+
+
