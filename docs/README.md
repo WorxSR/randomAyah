@@ -1,3 +1,4 @@
+<img width="224" height="225" alt="image" src="ayah.png" />
 # Quran Random Ayah Chrome Extension
 
 A minimal and respectful Chrome extension that displays a random Quranic verse (ayah) using the public [Alquran.cloud API](https://alquran.cloud/api). It’s designed to provide daily spiritual insight in a lightweight and non-intrusive way.
