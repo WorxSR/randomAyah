@@ -60,7 +60,7 @@ you might run it locally in your chrome browser or any compatible browser as "Br
 
 ## 📬 Contact
 
-For suggestions or support, please use the worx.sw@email.com
+For suggestions or support, please use the worx.sw@gmail.com
 
 ---
 
