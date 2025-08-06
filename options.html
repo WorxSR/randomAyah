@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 10px; }
+    label { margin-right: 10px; }
+    input[type="number"] { width: 60px; }
+    .error { color: red; }
+    img {
+  border-radius: 45px;
+  border: 2px solid #73AD21;
+
+}
+  </style>
+</head>
+<body>
+    <img src="ayah.png"width="80px">
+<h1> Random Quran Verse</h1>
+  <h2>Settings</h2>
+  <div>
+    <label for="interval">Interval (minutes): </label>
+    <input type="number" id="interval" min="1" value="60">
+  </div>
+  <div style="margin-top: 10px;">
+    <label>
+      <input type="checkbox" id="autoplay"> Autoplay Audio
+    </label>
+  </div>
+    <div style="margin-top: 10px;">
+    <label>
+      <input type="checkbox" id="optOutLocalStorage"> Opt Out of Local Data Storage
+    </label>
+  </div>
+  <button id="save">Save</button>
+  <hr>
+  <div><strong> Privacy Policy </strong><br>
+This extension does not collect or store any personally identifiable information. For full details, please refer to our <a href="https://drive.google.com/file/d/1Iw9Kg5aFmakAmY3DF4IHnsLzxpoafMiI/view" target=_blank>Privacy Policy.</a>
+</div>
+  <div> Worx Solutions-Egypt</div>
+  <div id="error-message" class="error"></div>
+  <script src="options.js"></script> <!-- Link to external script -->
+</body>
+</html>

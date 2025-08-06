@@ -1,0 +1,75 @@
+@font-face {
+  font-family: 'KFGQPCHafs';
+  src: url('fonts/kfgqpchafs.ttf') format('truetype');
+}
+
+body {
+  font-family: Arial, sans-serif;
+  width: 300px;
+  padding: 10px;
+  text-align: center;
+  background-color: #f5f5f5;
+}
+
+#ayah-container {
+  background-color: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#ayah-text {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 10px 0;
+}
+
+.uthmanic {
+  font-family: 'KFGQPCHafs', sans-serif;
+  font-size: 24px;
+  direction: rtl;
+}
+
+#ayah-reference {
+  font-size: 14px;
+  color: #7f8c8d;
+  margin: 5px 0;
+}
+
+#ayah-translation {
+  font-size: 14px;
+  color: #34495e;
+  //font-style: italic;
+}
+
+img {
+  border-radius: 45px;
+  border: 2px solid #73AD21;
+
+}
+button {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background-color: #2ecc71;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+}
+
+#worx {
+  font-size: 11px;
+  color: #7f8c8d;
+  margin: 5px 0;
+}
+
