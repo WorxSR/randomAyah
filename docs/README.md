@@ -19,7 +19,7 @@ A minimal and respectful Chrome extension that displays a random Quranic verse (
 We respect your privacy. This extension does **not collect**, transmit, or sell any personal data.
 
 Read the full policy here:  
-👉 [Privacy Policy](https://worxsr.github.io/randomAyah/docs/privacy.html)
+👉 [Privacy Policy](https://worxsr.github.io/randomAyah/privacy.html)
 
 ---
 
