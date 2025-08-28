@@ -12,7 +12,11 @@ A minimal and respectful Chrome extension that displays a random Quranic verse (
 - Uses the [Alquran.cloud API](https://alquran.cloud/api) for reliable verse sourcing
 - Stores ayahs **locally** in Chrome extension storage for better performance
 - **No personal data collection**
-- Users can **opt out** of local storage via the Options page
+- <strike>Users can **opt out** of local storage via the Options page</strike> **Note**: Opt out local storage cause a bugs in not displaying Ayah in popup windows as read content from local storage that not saved and replace by a new random ayah instead of one shown in the notification alert.
+- **New features added in 28 Aug 2025**
+- in pop up windows we add Ayah tafseer - **تفسير الآية** from 8 sources as (Tabary, Ben Katheer,...etc.), selecting any of these sources can be selected from options page.
+- in popup windows we added a dropdown list to select any Surah / Ayah and diplay it along with its tafseer as well.
+- Now from option page you can select desired Reciter - قارئ - from a dropdown list who has a quran audio files in **mp3** format with biterate 128.
 
 ---
 
@@ -45,6 +49,7 @@ you might run it locally in your chrome browser or any compatible browser as "Br
 ├── options.js
 ├── fonts/
 │ └── kfgqpchafs.ttf
+| └── Amiri.ttf
 ├── docs/
 |  └──privacy.html
 |  └──Random Quran Ayah-User Data Privacy.pdf
@@ -57,6 +62,7 @@ you might run it locally in your chrome browser or any compatible browser as "Br
 
 - Quran API powered by [Alquran.cloud](https://alquran.cloud/)
 - Inspired by the need for mindful and meaningful browser experiences
+- this extension is open source you can download and installed freely without any license required.
 
 ---
 
