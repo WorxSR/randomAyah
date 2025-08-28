@@ -3,6 +3,12 @@
   src: url('fonts/kfgqpchafs.ttf') format('truetype');
 }
 
+ @font-face {
+    font-family: 'Amiri Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: url('fonts/Amiri-Regular.woff') format('woff');
+    }
 body {
   font-family: Arial, sans-serif;
   width: 300px;
@@ -30,6 +36,23 @@ body {
   font-size: 24px;
   direction: rtl;
 }
+.amiri{
+  font-family: 'Amiri', sans-serif;
+  font-size: 14px;
+  color: #34495e;
+  text-align: justify;
+  direction: rtl;
+
+}
+
+//link Tafseer
+.tafseer-link{
+  font-family: 'Amiri', sans-serif;
+  font-size: 16px;
+  color: #34495e;
+  text-align: center;
+  direction: rtl;
+}
 
 #ayah-reference {
   font-size: 14px;
@@ -41,6 +64,12 @@ body {
   font-size: 14px;
   color: #34495e;
   //font-style: italic;
+}
+#ayah-tafseer {
+font-family: 'Amiri', sans-serif;
+  font-size: 14px;
+  color: #34495e;
+  display:none;
 }
 
 img {

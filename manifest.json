@@ -1,12 +1,16 @@
 {
   "manifest_version": 3,
   "name": "Random Quran Ayah",
-  "version": "1.0",
-  "description": "Displays a random Quranic ayah with audio playback (Husary).",
+  "version": "1.0.4",
+  "description": "Displays a random Quranic ayah with audio playback (Husary and Others reciters). ",
   "permissions": [
     "alarms",
     "storage",
     "notifications"
+  ],
+    "host_permissions": [
+    "https://api.alquran.cloud/*",
+    "http://api.quran-tafseer.com/*"
   ],
   "action": {
     "default_popup": "popup.html",

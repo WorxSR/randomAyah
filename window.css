@@ -1,39 +1,71 @@
+@font-face {
+  font-family: 'KFGQPCHafs';
+  src: url('fonts/kfgqpchafs.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Amiri';
+  src: url('fonts/Amiri-Regular.ttf') format('truetype');
+}
+ @font-face {
+    font-family: 'Amiri Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: url('fonts/Amiri-Regular.woff') format('woff');
+    }
+
 body {
   font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 10px;
   width: 300px;
+  padding: 10px;
+  text-align: center;
   background-color: #f5f5f5;
 }
 
-.container {
-  text-align: center;
+#ayah-container {
+  background-color: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
+#ayah-text {
   font-size: 18px;
+  font-weight: bold;
   color: #2c3e50;
-  margin-bottom: 10px;
+  margin: 10px 0;
 }
 
-.ayah-text {
-  font-size: 20px;
-  line-height: 1.5;
-  color: #1a3c34;
+.uthmanic {
+  font-family: 'KFGQPCHafs', sans-serif;
+  font-size: 24px;
   direction: rtl;
-  margin-bottom: 10px;
 }
-
-.ayah-translation {
+.amiri{
+  font-family: 'Amiri', sans-serif;
   font-size: 14px;
   color: #34495e;
-  margin-bottom: 10px;
+  text-align: justify;
+  direction: rtl;
+
+}
+#ayah-reference {
+  font-family: 'Amiri', sans-serif;
+  font-size: 14px;
+  color: #7f8c8d;
+  margin: 5px 0;
 }
 
-.ayah-reference {
-  font-size: 12px;
-  color: #7f8c8d;
-  margin-bottom: 15px;
+#ayah-translation {
+  font-size: 14px;
+  color: #34495e;
+  //font-style: italic;
+}
+#ayah-tafseer {
+  font-family: 'Amiri', sans-serif;
+  font-size: 14px;
+  color: #34495e;
+  text-align: justify;
+
 }
 
 img {
@@ -59,3 +91,10 @@ button:hover {
   color: red;
   font-size: 12px;
 }
+
+#worx {
+  font-size: 11px;
+  color: #7f8c8d;
+  margin: 5px 0;
+}
+

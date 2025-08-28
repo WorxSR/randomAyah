@@ -2,59 +2,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const ayahArabic = document.getElementById('ayah-arabic');
   const ayahTranslation = document.getElementById('ayah-translation');
   const ayahReference = document.getElementById('ayah-reference');
+  const ayahTafseer = document.getElementById('ayah-tafseer');
   const playButton = document.getElementById('play-audio');
   const audioElement = document.getElementById('ayah-audio');
   const errorMessage = document.getElementById('error-message');
 
-  if (!ayahArabic || !ayahTranslation || !ayahReference || !playButton || !audioElement || !errorMessage) {
+  const totalAyahs = 6236;
+  const randomAyahNumber = Math.floor(Math.random() * totalAyahs) + 1;
+
+
+  if (!ayahArabic || !ayahTranslation || !ayahReference || !ayahTafseer || !playButton || !audioElement || !errorMessage) {
     console.error('Popup DOM elements missing at', new Date().toISOString(), {
       ayahArabic: !!ayahArabic,
       ayahTranslation: !!ayahTranslation,
       ayahReference: !!ayahReference,
+      ayahTafseer: !!ayahTafseer,
       playButton: !!playButton,
       audioElement: !!audioElement,
       errorMessage: !!errorMessage
     });
     return;
   }
-
-  const defaultAyah = {
-    arabic: 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ',
-    translation: 'In the name of Allah, the Most Gracious, the Most Merciful',
-    surahName: 'Al-Fatiha',
-    surahNumber: 1,
-    ayahNumber: 1,
-    audioUrl: 'https://cdn.alquran.cloud/media/audio/ayah/ar.husary/1.mp3'
-  };
-
-  chrome.storage.sync.get(['optOutLocalStorage'], (result) => {
-    if (!result.optOutLocalStorage) {
-      chrome.storage.local.get(['ayahData'], (localResult) => {
-        console.log('Popup stored ayahData at', new Date().toISOString(), ':', JSON.stringify(localResult.ayahData, null, 2));
-        if (localResult.ayahData && isValidAyahData(localResult.ayahData)) {
-          displayAyah(localResult.ayahData);
-        } else {
-          setErrorMessage('لا توجد بيانات آية صالحة في التخزين');
-          console.log('Popup no valid ayah data, fetching new ayah');
-          fetchRandomAyah().catch((err) => {
-            setErrorMessage('خطأ في جلب الآية: ' + err.message);
-            console.error('Popup fetchRandomAyah error at', new Date().toISOString(), ':', err);
-            displayAyah(defaultAyah);
-          });
-        }
-      });
-    } else {
-      setErrorMessage('Local storage opted out, fetching new ayah');
-      console.log('Popup local storage opted out, fetching new ayah');
-      fetchRandomAyah().catch((err) => {
-        setErrorMessage('خطأ في جلب الآية: ' + err.message);
-        console.error('Popup fetchRandomAyah error at', new Date().toISOString(), ':', err);
-        displayAyah(defaultAyah);
-      });
-    }
-  });
-
-  playButton.addEventListener('click', () => {
+    playButton.addEventListener('click', () => {
     if (audioElement.src && audioElement.src !== '') {
       audioElement.play().catch((err) => {
         setErrorMessage('خطأ في تشغيل الصوت: ' + err.message);
@@ -65,94 +34,127 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Popup no valid audio URL at', new Date().toISOString());
     }
   });
-
-  function isValidAyahData(ayahData) {
-    const isValid = ayahData &&
-           typeof ayahData.arabic === 'string' && ayahData.arabic.length > 0 &&
-           typeof ayahData.translation === 'string' && ayahData.translation.length > 0 &&
-           typeof ayahData.surahName === 'string' && ayahData.surahName.length > 0 &&
-           typeof ayahData.surahNumber === 'number' && ayahData.surahNumber > 0 &&
-           typeof ayahData.ayahNumber === 'number' && ayahData.ayahNumber > 0 &&
-           typeof ayahData.audioUrl === 'string';
-    console.log('Popup isValidAyahData at', new Date().toISOString(), ':', isValid, JSON.stringify(ayahData, null, 2));
-    return isValid;
-  }
-
-  async function fetchRandomAyah() {
-    const totalAyahs = 6236;
-    const randomAyahNumber = Math.floor(Math.random() * totalAyahs) + 1;
-    console.log('Popup fetching ayah number at', new Date().toISOString(), ':', randomAyahNumber);
-
-    try {
-      const arResponse = await fetch(`https://api.alquran.cloud/v1/ayah/${randomAyahNumber}/ar.husary`);
-      if (!arResponse.ok) {
-        throw new Error(`HTTP error ${arResponse.status}`);
-      }
-      const data = await arResponse.json();
-      console.log('Popup ar.husary response at', new Date().toISOString(), ':', JSON.stringify(data, null, 2));
-      console.log('Popup audio field at', new Date().toISOString(), ':', data.data?.audio);
-
-      if (data.code === 200 && data.data && typeof data.data.text === 'string' && data.data.surah) {
-        const ayahData = {
-          arabic: data.data.text,
-          surahName: data.data.surah.englishName || 'Unknown',
-          surahNumber: data.data.surah.number || 0,
-          ayahNumber: data.data.numberInSurah || 0,
-          audioUrl: typeof data.data.audio === 'string' ? data.data.audio : ''
-        };
-
-        const transResponse = await fetch(`https://api.alquran.cloud/v1/ayah/${randomAyahNumber}/en.sahih`);
-        if (!transResponse.ok) {
-          throw new Error(`HTTP error ${transResponse.status}`);
-        }
-        const transData = await transResponse.json();
-        console.log('Popup en.sahih response at', new Date().toISOString(), ':', JSON.stringify(transData, null, 2));
-
-        if (transData.code === 200 && transData.data && typeof transData.data.text === 'string') {
-          ayahData.translation = transData.data.text;
-          if (isValidAyahData(ayahData)) {
-            if (!chrome.storage.sync.get(['optOutLocalStorage'], (result) => result.optOutLocalStorage)) {
-              await new Promise((resolve) => {
-                chrome.storage.local.set({ ayahData }, () => {
-                  console.log('Popup saved ayahData at', new Date().toISOString(), ':', JSON.stringify(ayahData, null, 2));
-                  resolve();
-                });
-              });
-            }
-            displayAyah(ayahData);
-          } else {
-            setErrorMessage('بيانات الآية غير صالحة بعد الجلب');
-            console.error('Popup invalid ayahData at', new Date().toISOString(), ':', JSON.stringify(ayahData, null, 2));
-            displayAyah(defaultAyah);
-          }
+ 
+  // chk optoutstorage and default Ayah
+  const defaultAyah = {
+    arabic: 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ',
+    translation: 'In the name of Allah, the Most Gracious, the Most Merciful',
+    surahName: 'Al-Fatiha',
+    surahNumber: 1,
+    ayahNumber: 1,
+    ayahTafseer: 'Not Available Currently',
+    audioUrl: 'https://cdn.alquran.cloud/media/audio/ayah/ar.husary/1.mp3'
+  };
+    chrome.storage.sync.get(['optOutLocalStorage'], (result) => {
+    if (!result.optOutLocalStorage) {
+      chrome.storage.local.get(['ayahData'], (localResult) => {
+        console.log('Popup stored ayahData at', new Date().toISOString(), ':', JSON.stringify(localResult.ayahData, null, 2));
+        if (localResult.ayahData) {
+          displayAyah(localResult.ayahData);
         } else {
-          setErrorMessage('خطأ في جلب الترجمة: بيانات غير صالحة');
-          console.error('Popup invalid translation data at', new Date().toISOString(), ':', JSON.stringify(transData, null, 2));
-          displayAyah(defaultAyah);
+          //setErrorMessage('لا توجد بيانات آية صالحة في التخزين');
+          console.log('Popup no valid ayah data, fetching new ayah');
+          fetchRandomAyahAndDisplay().catch((err) => {
+            setErrorMessage('خطأ في جلب الآية: ' + err.message);
+            console.error('Popup fetchRandomAyahAndDisplay error at', new Date().toISOString(), ':', err);
+            displayAyah(defaultAyah);
+          });
         }
-      } else {
-        setErrorMessage('خطأ في جلب الآية أو الصوت: بيانات غير صالحة');
-        console.error('Popup invalid ar.husary data at', new Date().toISOString(), ':', JSON.stringify(data, null, 2));
+      });
+    } else {
+      //setErrorMessage('Local storage opted out, fetching new ayah');
+      console.log('Popup local storage opted out, fetching new ayah');
+      fetchRandomAyahAndDisplay().catch((err) => {
+        setErrorMessage('خطأ في جلب الآية: ' + err.message);
+        console.error('Popup fetchRandomAyah error at', new Date().toISOString(), ':', err);
         displayAyah(defaultAyah);
-      }
-    } catch (err) {
-      setErrorMessage('خطأ في جلب الآية: ' + err.message);
-      console.error('Popup fetchRandomAyah error at', new Date().toISOString(), ':', err);
-      displayAyah(defaultAyah);
+      });
     }
+  });
+ 
+  
+async function getTafseer(ayahData) {
+  try {
+    // Get user-selected Tafseer source
+    const rs = await new Promise((resolve) => chrome.storage.sync.get('tafseerSource', resolve));
+    const tafseerSource = rs.tafseerSource || 4;
+
+    // Fetch Tafseer
+    const tafseerRes = await fetch(`http://api.quran-tafseer.com/tafseer/${tafseerSource}/${ayahData.surahNumber}/${ayahData.ayahNumber}`);
+    if (!tafseerRes.ok) throw new Error(`Tafseer fetch error ${tafseerRes.status}`);
+
+    const tafseerData = await tafseerRes.json();
+
+    if (tafseerData && tafseerData.text) {
+      ayahData.tafseer = `${tafseerData.tafseer_name}: ${tafseerData.text}`;
+    } else {
+      ayahData.tafseer = "No Tafseer available.";
+    }
+  } catch (err) {
+    console.error("Error fetching Tafseer:", err);
+    ayahData.tafseer = "Error fetching Tafseer.";
   }
+}
+
+async function fetchRandomAyahAndDisplay() {
+  try {
+     //get Reciter
+    const rec = await new Promise((resolve) => chrome.storage.sync.get('ayahReciter', resolve));
+    const ayahReciter = rec.ayahReciter || 'ar.husary';
+    // Get saved ayah data first (in case of reload)
+    let ayahData = await new Promise((resolve) => chrome.storage.local.get("ayahData", (res) => resolve(res.ayahData || {})));
+
+    // If ayahData missing, fetch it fresh
+    if (!ayahData || !ayahData.arabic) {
+ 
+      // Fetch Arabic
+      const arRes = await fetch(`https://api.alquran.cloud/v1/ayah/${randomAyahNumber}/${ayahReciter}`);
+      if (!arRes.ok) throw new Error(`Arabic fetch error ${arRes.status}`);
+      const arData = await arRes.json();
+
+      // Basic ayahData structure
+      ayahData = {
+        arabic: arData.data.text,
+        surahName: arData.data.surah.name,
+        surahNumber: arData.data.surah.number,
+        ayahNumber: arData.data.numberInSurah,
+        audioUrl: arData.data.audio || ""
+      };
+
+      // Fetch translation
+      const enRes = await fetch(`https://api.alquran.cloud/v1/ayah/${randomAyahNumber}/en.sahih`);
+      if (!enRes.ok) throw new Error(`Translation fetch error ${enRes.status}`);
+      const enData = await enRes.json();
+      ayahData.translation = enData.data.text;
+    }
+
+    // Always fetch Tafseer before showing
+    await getTafseer(ayahData);
+
+    // Save updated ayahData (with tafseer)
+    await new Promise((resolve) => chrome.storage.local.set({ ayahData }, resolve));
+
+    // Display
+    displayAyah(ayahData);
+
+  } catch (err) {
+    console.error("Error in fetchRandomAyahAndDisplay:", err);
+  }
+}
+
+// Call on popup load
+document.addEventListener("DOMContentLoaded", fetchRandomAyahAndDisplay);
+
 
   function displayAyah(ayahData) {
-    try {
-      if (!isValidAyahData(ayahData)) {
-        throw new Error('بيانات الآية غير صالحة');
-      }
+    
       ayahArabic.textContent = ayahData.arabic;
       ayahTranslation.textContent = ayahData.translation;
-      ayahReference.textContent = `Surah ${ayahData.surahName} (${ayahData.surahNumber}:${ayahData.ayahNumber})`;
+      ayahReference.textContent = ` ${ayahData.surahName} (${ayahData.ayahNumber}:${ayahData.surahNumber})`;
       audioElement.src = ayahData.audioUrl || '';
       playButton.disabled = !ayahData.audioUrl;
-      setErrorMessage(ayahData.audioUrl ? '' : 'لا يوجد رابط صوتي متاح');
+      ayahTafseer.textContent = ayahData.tafseer;      
+     // setErrorMessage(ayahData.audioUrl ? '' : 'لا يوجد رابط صوتي متاح');
       console.log('Popup displayed ayah at', new Date().toISOString(), ':', JSON.stringify(ayahData, null, 2));
 
       chrome.storage.sync.get(['autoplayAudio'], (result) => {
@@ -163,17 +165,39 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         }
       });
-    } catch (err) {
-      setErrorMessage('خطأ في عرض الآية: ' + err.message);
-      console.error('Popup displayAyah error at', new Date().toISOString(), ':', err, JSON.stringify(ayahData, null, 2));
-    }
+
   }
 
-  function setErrorMessage(message) {
+/*
+function displayAyah(ayahData) {
+  document.getElementById('ayah-arabic').textContent = ayahData.arabic || '';
+  document.getElementById('ayah-translation').textContent = ayahData.translation || '';
+ // document.getElementById('ayah-tafseer').textContent = ayahData.tafseer || '';
+  document.getElementById('ayah-reference').textContent =
+    `${ayahData.surahName || ''} (${ayahData.surahNumber || ''}:${ayahData.ayahNumber || ''})`;
+  document.getElementById('play-audio').disabled = !ayahData.audioUrl
+    document.getElementById('ayah-audio').src = ayahData.audioUrl || '';
+ 
+}*/
+   function setErrorMessage(message) {
     if (errorMessage) {
       errorMessage.textContent = message;
     } else {
       console.error('Error message element not found at', new Date().toISOString(), ': Attempted to set', message);
     }
   }
+  
+// Load initial
+chrome.storage.local.get('ayahData', (result) => {
+  if (result.ayahData) {
+    displayAyah(result.ayahData);
+  }
+});
+
+// Listen for updates from background
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === 'local' && changes.ayahData && changes.ayahData.newValue) {
+    displayAyah(changes.ayahData.newValue);
+  }
+});
 });

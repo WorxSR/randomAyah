@@ -15,6 +15,8 @@
 
 }
   </style>
+  <script src="ffmpeg.min.js"></script>
+
 </head>
 <body>
     <img src="ayah.png"width="80px">
@@ -25,22 +27,56 @@
     <input type="number" id="interval" min="1" value="60">
   </div>
   <div style="margin-top: 10px;">
-    <label>
-      <input type="checkbox" id="autoplay"> Autoplay Audio
-    </label>
-  </div>
-    <div style="margin-top: 10px;">
-    <label>
-      <input type="checkbox" id="optOutLocalStorage"> Opt Out of Local Data Storage
-    </label>
-  </div>
-  <button id="save">Save</button>
-  <hr>
-  <div><strong> Privacy Policy </strong><br>
-This extension does not collect or store any personally identifiable information. For full details, please refer to our <a href="https://drive.google.com/file/d/1Iw9Kg5aFmakAmY3DF4IHnsLzxpoafMiI/view" target=_blank>Privacy Policy.</a>
+  <label for="ayahReciter">Reciters - شيوخ القراء:</label>
+ <select id="ayahReciter">
+<!--  <option value="ar.abdulsamad">عبدالباسط عبدالصمد</option> -->
+  <option value="ar.muhammadjibreel">محمد جبريل</option>
+  <option value="ar.husary" selected>محمود خليل الحصري</option>
+  <option value="ar.minshawi">محمد صديق المنشاوي </option>
+<!--  <option value="ar.saoodshuraym" >سعود الشريم</option> -->
+  <option value="ar.mahermuaiqly">ماهر المعيقلي</option>
+  <option value="ar.hudhaify">علي بن عبدالرحمن الحذيفي</option>
+  <option value="ar.muhammadayyoub">محمد أيوب</option>
+ </select>
 </div>
-  <div> Worx Solutions-Egypt</div>
+  <div style="margin-top: 10px;">
+    <label>
+      <input type="checkbox" id="autoplay"> Autoplay Audio - تشغيل الصوت تلقائي
+    </label>
+  </div>
+
+<div style="margin-top: 10px; margin-bottom:15px;">
+  <label for="tafseerSource">Select Tafseer- التفاسير:</label>
+ <select id="tafseerSource">
+  <option value=1 >الميسر</option>
+  <option value=2>الجلالين </option>
+  <option value=3>السعدي</option>
+  <option value=4 selected>ابن كثير</option>
+  <option value=5 >الوسيط</option>
+  <option value=6>البغوي</option>
+  <option value=7>القرطبي</option>
+  <option value=8>الطبري</option>
+  
+ </select>
+</div>
+  <button id="save">Save</button> 
+
+<div style="margin-top: 10px;">
+  <div ><strong> Privacy Policy </strong><br>
+This extension does not collect or store any personally identifiable information. For full details, please refer to our <a href="https://worxsr.github.io/randomAyah/privacy.html" target=_blank>Privacy Policy.</a> 
+This product is open source and available for free download from <a href="https://github.com/WorxSR/randomAyah" target=_blank> here</a>
+</div><div>
+<p align="right"><strong> سياسة الخصوصية </strong><br> لا يجمع هذا الامتداد أو يخزن أي معلومات شخصية. للمزيد من التفاصيل، يُرجى مراجعة <a href="https://worxsr.github.io/randomAyah/privacy.html" target=_blank> سياسة الخصوصية الخاصة بنا.</a>, 
+هذا المنتج يتبع المصادر المفتوحة ومتاح للتزيل مجانا من <a href="https://github.com/WorxSR/randomAyah" target=_blank> هنا </a>
+</div>
+</div>
+  <div align="center"> <b>Worx</b> Solutions-Egypt</div>
   <div id="error-message" class="error"></div>
   <script src="options.js"></script> <!-- Link to external script -->
+      <div>
+    <label>
+     <input hidden type="checkbox" id="optOutLocalStorage"> <!--Opt Out of Local Data Storage -->
+    </label>
+  </div>
 </body>
 </html>
